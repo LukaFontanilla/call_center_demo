@@ -36,5 +36,14 @@ explore: transcript {
     relationship: one_to_many
     sql_on: ${banking_client_facts.client_id}=${client.client_id} ;;
   }
-
+  join: ngrams {
+    fields: []
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${transcript__messages.message_id} = ${ngrams.message_id} ;;
+  }
+  join: ngrams__question_gram {
+    sql: , UNNEST(${ngrams.question_gram}) as ngrams__question_gram ;;
+    relationship: one_to_many
+  }
 }

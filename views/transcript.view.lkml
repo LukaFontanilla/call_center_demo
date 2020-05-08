@@ -40,7 +40,9 @@ view: transcript {
       week,
       month,
       quarter,
-      year
+      year,
+      day_of_week,
+      hour_of_day
     ]
     sql: ${TABLE}.conversation_start_at ;;
   }
@@ -89,6 +91,11 @@ view: transcript {
     type: yesno
     sql: ${number_of_messages} < 1 ;;
   }
+
+#   dimension: new_caller {
+#     type: yesno
+#     sql: ${caller_client_facts.total_lifetime_calls} = 0 ;;
+#   }
 
   ### Measures ###
 
@@ -246,10 +253,23 @@ view: transcript__messages {
     sql: ${TABLE}.response ;;
   }
 
+  parameter: number_words_gram {
+    type: number
+    view_label: "N - Grams"
+    description: "The number of words for the N gram analysis (e.g. 2 means use bi-grams)"
+  }
+
   dimension: question_text {
     group_label: "Message Transcript"
     type: string
     sql: ${TABLE}.user_question ;;
+  }
+
+  measure: question_gram {
+    hidden: yes
+    view_label: "N - Grams"
+    #type: string
+    sql:  ARRAY_CONCAT_AGG(ML.NGRAMS(REGEXP_EXTRACT_ALL(LOWER(${question_text}), '[a-z]+'),[{% parameter number_words_gram %},{% parameter number_words_gram %}]))  ;;
   }
 
   dimension: message_sentiment {
