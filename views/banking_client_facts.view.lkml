@@ -9,6 +9,7 @@ view: banking_client_facts {
       column: average_daily_balance {}
       column: client_id { field: client.client_id }
       column: account_id { field: account.account_id }
+      column: account_created_date { field: account.create_raw }
       column: number_of_credit_cards { field: card.number_of_credit_cards }
       filters: {
         field: balances_fact.balance_date
@@ -44,18 +45,30 @@ view: banking_client_facts {
   }
 
   dimension: account_id {
+    hidden: yes
     type: number
   }
-
 
   dimension: number_of_credit_cards {
     label: "Credit Card Number of Credit Cards"
     type: number
   }
 
+  dimension_group: account_start {
+    type: time
+    sql: ${TABLE}.account_created_date;;
+  }
+
   measure: total_in_accounts_yesterday {
     type: sum
     sql: ${balance_yesterday} ;;
+  }
+
+  measure: high_value_clients {
+    type: count_distinct
+    description: "High value clients have a daily average balance over $10,000"
+    filters: [average_daily_balance: ">10000"]
+    sql: ${client_id} ;;
   }
 
 }

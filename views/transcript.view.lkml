@@ -61,6 +61,25 @@ view: transcript {
     sql: ${TABLE}.conversation_end_at ;;
   }
 
+  dimension: months_since_signup {
+    type: duration_month
+    sql_start: ${banking_client_facts.account_start_raw} ;;
+    sql_end: ${conversation_start_raw};;
+  }
+
+
+  dimension: months_since_first_conversation {
+    type:duration_month
+    sql_start: ${client_call_facts.first_conversation_raw};;
+    sql_end: ${conversation_start_raw};;
+  }
+
+  dimension: is_first_call {
+    description: "Is this the users first call?"
+    type: yesno
+    sql: ${conversation_start_raw} > ${client_call_facts.first_conversation_raw};;
+  }
+
   ### Database Fields ###
 
   dimension: messages {
@@ -87,15 +106,17 @@ view: transcript {
     sql: ${agent_id} is not null ;;
   }
 
-  dimension: hung_up_before_call {
+  dimension: drop_off {
     type: yesno
     sql: ${number_of_messages} < 1 ;;
   }
 
-#   dimension: new_caller {
-#     type: yesno
-#     sql: ${caller_client_facts.total_lifetime_calls} = 0 ;;
-#   }
+  dimension: resolved_on_call {
+    description: "Was the issue resolved on the call or did it require a followup?"
+    type: yesno
+    sql: ${TABLE}.resolved_on_call = 'Yes' ;;
+  }
+
 
   ### Measures ###
 
@@ -136,6 +157,12 @@ view: transcript {
     type: average
     sql: ${conversation_duration}  ;;
     value_format_name: decimal_1
+  }
+
+  measure: first_conversation_time {
+    hidden: yes
+    type: date_time
+    sql: min(${conversation_start_raw}) ;;
   }
 
 }
@@ -254,9 +281,17 @@ view: transcript__messages {
   }
 
   parameter: number_words_gram {
+    label: "Number of Words in the Gram"
     type: number
     view_label: "N - Grams"
     description: "The number of words for the N gram analysis (e.g. 2 means use bi-grams)"
+  }
+
+  parameter: stop_words_gram {
+    description: "Stop Words"
+    type: number
+    view_label: "N - Grams"
+    description: "Words to not include in the gram"
   }
 
   dimension: question_text {

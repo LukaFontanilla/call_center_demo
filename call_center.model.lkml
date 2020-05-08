@@ -46,4 +46,8 @@ explore: transcript {
     sql: , UNNEST(${ngrams.question_gram}) as ngrams__question_gram ;;
     relationship: one_to_many
   }
+  join: client_call_facts {
+    sql_on: ${client.client_id} = ${client_call_facts.client_id} ;;
+    relationship: one_to_one
+  }
 }
