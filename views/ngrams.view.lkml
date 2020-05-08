@@ -1,5 +1,6 @@
 
 view: ngrams {
+  view_label: "N - Grams"
   derived_table: {
     explore_source: transcript {
       column: question_gram { field: transcript__messages.question_gram }
@@ -19,6 +20,7 @@ view: ngrams {
 
 
 view: ngrams__question_gram {
+  view_label: "N - Grams"
   dimension: question_gram {
     type: string
     sql: ${TABLE};;
