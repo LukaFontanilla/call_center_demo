@@ -1,15 +1,28 @@
 view: transcript {
   view_label: "Conversation"
   sql_table_name: `looker-private-demo.call_center.transcript_with_messages`;;
+  drill_fields: [conversation_short,conversation_start_date,passed_to_live_agent,banking_client_facts.account_id, number_of_messages,
+    conversation_duration,transcript__messages.average_sentiment_category]
 
   ### Primar Key ###
 
   dimension: conversation_id {
+    hidden: yes
     primary_key: yes
     type: string
     sql: ${TABLE}.conversation_id ;;
+  }
+
+  dimension: conversation_short {
+    label: "Conversation ID"
+    sql: substr(${conversation_id},0,5) ;;
     link: {
       label: "Listen to entire conversation"
+      url: "https://console.cloud.google.com/"
+      icon_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Google-Cloud-Storage-Logo.svg/1200px-Google-Cloud-Storage-Logo.svg.png"
+    }
+    link: {
+      label: "View full transcript"
       url: "https://console.cloud.google.com/"
       icon_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Google-Cloud-Storage-Logo.svg/1200px-Google-Cloud-Storage-Logo.svg.png"
     }
@@ -62,6 +75,7 @@ view: transcript {
   }
 
   dimension: months_since_signup {
+    description: "The months between the conversation start date and the day the client's account was created"
     type: duration_month
     sql_start: ${banking_client_facts.account_start_raw} ;;
     sql_end: ${conversation_start_raw};;
@@ -69,6 +83,7 @@ view: transcript {
 
 
   dimension: months_since_first_conversation {
+    description: "The months between the conversation start date and the client's first conversation"
     type:duration_month
     sql_start: ${client_call_facts.first_conversation_raw};;
     sql_end: ${conversation_start_raw};;
@@ -133,7 +148,6 @@ view: transcript {
   }
 
   measure: percent_not_passed_to_live {
-    group_label: "Percents"
     label: "Percent of Conversations w/o Live Agent"
     type: number
     sql: ${count_not_passed_to_live}/nullif(${count},0) ;;
@@ -141,6 +155,7 @@ view: transcript {
   }
 
   measure: average_number_of_messages {
+    label: "Avergae Number of Messages per Call"
     type: average
     sql: ${number_of_messages} ;;
     value_format_name: decimal_1
@@ -169,13 +184,16 @@ view: transcript {
 
 view: transcript__messages {
   view_label: "Messages"
+  drill_fields: [transcript.conversation_short, message_id, issue_subtopic, issue_topic, message_sentiment, message_sentiment_category]
 
   ## Primary key ###
 
   dimension: message_id {
     primary_key: yes
     sql: ${TABLE}.message_id ;;
+    drill_fields: [question_text,response_text]
   }
+
 
   ### Date Times ###
 
@@ -230,6 +248,7 @@ view: transcript__messages {
   }
 
   dimension: seconds_to_answer {
+    hidden: yes
     type: duration_second
     group_label: "Durations"
     description: "The amount of seconds it took for the agent to answer"
@@ -245,10 +264,22 @@ view: transcript__messages {
     sql_end: ${agent_end_raw} ;;
   }
 
+  dimension: wait_time {
+    description: "The total time waiting for a live agent"
+    group_label: "Durations"
+    type: number
+    sql:${TABLE}.answer_start;;
+#     sql: case when ${transcript.passed_to_live_agent} then (
+#               case when ${issue_topic} in ('Submit a Fraud','Speak with an Advisor') then ${TABLE}.answer_start*6
+#                     when  ${issue_topic} = 'Open a New Account' then ${TABLE}.answer_start*5
+#               else ${TABLE}.answer_start end) else null end ;;
+  }
+
   dimension: wait_time_tier {
+    group_label: "Durations"
     type: tier
     style: integer
-    sql: ${TABLE}.answer_start  ;;
+    sql: ${wait_time} ;;
     tiers: [30,60,120,300,600]
   }
 
@@ -287,13 +318,6 @@ view: transcript__messages {
     description: "The number of words for the N gram analysis (e.g. 2 means use bi-grams)"
   }
 
-  parameter: stop_words_gram {
-    description: "Stop Words"
-    type: number
-    view_label: "N - Grams"
-    description: "Words to not include in the gram"
-  }
-
   dimension: question_text {
     group_label: "Message Transcript"
     type: string
@@ -311,9 +335,9 @@ view: transcript__messages {
     label: "Sentiment Score"
     description: "Inferred sentiment score, out of 100%"
     type: number
-    sql: case when ${TABLE}.answer_start > 300 and ${TABLE}.sentiment >.2  then ${TABLE}.sentiment-.2
-              when ${TABLE}.answer_start > 60 and  ${TABLE}.sentiment <.8 then ${TABLE}.sentiment+.2
-              else ${TABLE}.sentiment end;;
+    sql: case when ${TABLE}.answer_start > 300 and ${TABLE}.sentiment >.25  then ${TABLE}.sentiment-.25
+              when ${TABLE}.answer_start > 60 and  ${TABLE}.sentiment <.75 then ${TABLE}.sentiment+.25
+              else (case when ${TABLE}.sentiment < .9 then  ${TABLE}.sentiment + .1 else ${TABLE}.sentiment end) end;;
     value_format_name: percent_1
   }
 
@@ -422,6 +446,16 @@ view: transcript__messages {
     description: "The average cost of a live agent, per hour"
     type: number
     default_value: "15"
+  }
+
+  measure: total_seconds_agent_speaking {
+    type: sum
+    sql: ${user_duration} ;;
+  }
+
+  measure: total_seconds_client_speaking {
+    type: sum
+    sql: ${agent_duration};;
   }
 
 

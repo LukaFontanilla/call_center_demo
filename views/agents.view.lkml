@@ -21,6 +21,32 @@ view: agents {
   dimension: name {
     type: string
     sql: ${TABLE}.name ;;
+    link: {
+      label: "Account Overview"
+      url: "/dashboards/5kxrH6SEfcxWdZi1Gts3La?Agent={{ value | encode_uri }}"
+      icon_url: "http://www.looker.com/favicon.ico"
+    }
+    action: {
+      label: "Send message to agent"
+      url: "https://desolate-refuge-53336.herokuapp.com/posts"
+      icon_url: "https://sendgrid.com/favicon.ico"
+      param: {
+        name: "some_auth_code"
+        value: "abc123456"
+      }
+      form_param: {
+        name: "Subject"
+        required: yes
+        default: "Great job!"
+      }
+      form_param: {
+        name: "Body"
+        type: textarea
+        required: yes
+        default:
+        "I've been reviewing your calls recently and you're doing a great job, keep up the good work"
+      }
+    }
   }
 
   dimension: organization_id {
