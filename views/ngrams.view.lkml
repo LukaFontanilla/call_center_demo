@@ -27,6 +27,7 @@ view: ngrams__question_gram {
   }
 
   dimension: primary_key {
+    hidden: yes
     type: string
     primary_key: yes
     sql: concat(${question_gram},${ngrams.message_id}) ;;

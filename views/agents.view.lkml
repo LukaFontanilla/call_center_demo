@@ -22,7 +22,7 @@ view: agents {
     type: string
     sql: ${TABLE}.name ;;
     link: {
-      label: "Account Overview"
+      label: "Agent Performance"
       url: "/dashboards/5kxrH6SEfcxWdZi1Gts3La?Agent={{ value | encode_uri }}"
       icon_url: "http://www.looker.com/favicon.ico"
     }
