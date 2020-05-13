@@ -289,16 +289,28 @@ view: transcript__messages {
     group_label: "Intent"
     type: string
     sql: ${TABLE}.intent_id ;;
+    link: {
+      label: "View Intent in DialogFlow Console"
+      url: "https://dialogflow.cloud.google.com/#"
+      icon_url: "https://cdn.clipart.email/b8a0fc38769b62b1328d4fa6ce96ed84_orange-background-png-download-512512-free-transparent-_900-520.jpeg"
+    }
   }
 
   dimension: issue_subtopic {
+    drill_fields: [intent_id]
     group_label: "Intent"
     label: "Topic"
     type: string
     sql: ${TABLE}.issue_subtopic ;;
+    link: {
+      label: "View Intent in DialogFlow Console"
+      url: "https://dialogflow.cloud.google.com/#"
+      icon_url: "https://cdn.clipart.email/b8a0fc38769b62b1328d4fa6ce96ed84_orange-background-png-download-512512-free-transparent-_900-520.jpeg"
+    }
   }
 
   dimension: issue_topic {
+    drill_fields: [issue_subtopic]
     group_label: "Intent"
     label: "Category"
     type: string
