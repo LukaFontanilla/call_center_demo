@@ -1,7 +1,7 @@
 view: transcript {
   view_label: "Conversation"
   sql_table_name: `looker-private-demo.call_center.transcript_with_messages`;;
-  drill_fields: [conversation_short,conversation_start_date,passed_to_live_agent,banking_client_facts.account_id, number_of_messages,
+  drill_fields: [conversation_short,conversation_start_date,passed_to_live_agent,banking_client_facts.account_id, transcript__messages.number_of_messages,
     conversation_duration,transcript__messages.average_sentiment_category]
 
   ### Primar Key ###
@@ -191,7 +191,7 @@ view: transcript__messages {
   dimension: message_id {
     primary_key: yes
     sql: ${TABLE}.message_id ;;
-    drill_fields: [question_text,response_text]
+    drill_fields: [question_text]
   }
 
 
@@ -375,6 +375,7 @@ view: transcript__messages {
 
   measure: number_of_messages {
     type: count
+    drill_fields: [question_text,response_text,user_start_time,user_end_time,agent_start_time,agent_end_time]
   }
 
   measure: number_of_messages_without_live_agent {
