@@ -131,6 +131,7 @@ view: banking_client_facts {
     description: "High value clients have a daily average balance over $10,000"
     filters: [average_daily_balance: ">10000"]
     sql: ${client_id} ;;
+    drill_fields: [account_id,account_start_date,client.name,total_in_accounts_yesterday]
   }
 
 }
