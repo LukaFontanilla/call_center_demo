@@ -356,7 +356,7 @@ view: transcript__messages {
   dimension: message_sentiment_category {
     type: string
     sql: case when ${message_sentiment} < .2 then 'Very Negative' when ${message_sentiment} < .4 then 'Negative'
-    when ${message_sentiment} < .6 then 'Neutal' when ${message_sentiment} < .8 then 'Positive'
+    when ${message_sentiment} < .6 then 'Neutral' when ${message_sentiment} < .8 then 'Positive'
     else 'Very Positive' end;;
   }
 
