@@ -70,6 +70,13 @@ view: client_call_facts {
   dimension_group: first_conversation {
     label: "Conversation First Conversation Date"
     type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      year
+    ]
     sql: ${TABLE}.first_conversation_time ;;
   }
 }

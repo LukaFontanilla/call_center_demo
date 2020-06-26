@@ -265,7 +265,7 @@ view: transcript__messages {
   }
 
   dimension: wait_time {
-    description: "The total time waiting for a live agent"
+    description: "The total time waiting for a live agent in seconds"
     group_label: "Durations"
     type: number
     sql:${TABLE}.answer_start;;
@@ -277,6 +277,7 @@ view: transcript__messages {
 
   dimension: wait_time_tier {
     group_label: "Durations"
+    description: "Wait time for 30, 60, 120, 300, 600 second buckets"
     type: tier
     style: integer
     sql: ${wait_time} ;;

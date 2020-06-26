@@ -4,6 +4,7 @@ view: agents {
 
   dimension: id {
     primary_key: yes
+    hidden: yes
     type: string
     sql: ${TABLE}.id ;;
   }
@@ -27,17 +28,22 @@ view: agents {
       icon_url: "http://www.looker.com/favicon.ico"
     }
     action: {
-      label: "Send message to agent"
+      label: "Send message to {{ name }}"
       url: "https://desolate-refuge-53336.herokuapp.com/posts"
       icon_url: "https://sendgrid.com/favicon.ico"
       param: {
         name: "some_auth_code"
         value: "abc123456"
       }
+      param: {
+        name: "Agent Email"
+        value: "{{ email._value }}"
+        ##this is a parameter that you pass behind the scenes
+      }
       form_param: {
         name: "Subject"
         required: yes
-        default: "Great job!"
+        default: "Great job {{ name }}!"
       }
       form_param: {
         name: "Body"
@@ -47,6 +53,7 @@ view: agents {
         "I've been reviewing your calls recently and you're doing a great job, keep up the good work"
       }
     }
+    required_fields: [email]
   }
 
   dimension: organization_id {

@@ -13,6 +13,7 @@ view: satisfaction_ratings {
 
   dimension: conversation_id {
     type: string
+    hidden: yes
     sql: ${TABLE}.ticket_id ;;
   }
 

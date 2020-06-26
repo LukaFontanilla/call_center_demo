@@ -43,6 +43,7 @@ view: banking_client_facts {
 
   dimension: average_daily_balance_tier {
     group_label: "Account Balance"
+    description: "Balance tiers of 1000, 2000, 5000, 100000"
     value_format_name: usd
     type: tier
     style: integer
@@ -105,10 +106,10 @@ view: banking_client_facts {
         default:
         "Hi there  -
 
-        We wanted to quickly reach out and let you know that account {{ value }} called our support center"
+        We wanted to quickly reach out and let you know that account {{ value }} called our support center {% if is_high_value._value == 'Yes' %} and they are a high value customer. {% else %}. {% endif %}"
       }
     }
-    required_fields: [client.first_name]
+    required_fields: [client.first_name, is_high_value]
   }
 
   dimension: number_of_credit_cards {
@@ -121,6 +122,12 @@ view: banking_client_facts {
     sql: ${TABLE}.account_created_date;;
   }
 
+  dimension: is_high_value {
+    type: yesno
+    hidden: yes
+    sql: ${average_daily_balance} > 10000 ;;
+  }
+
   measure: total_in_accounts_yesterday {
     type: sum
     sql: ${balance_yesterday} ;;
@@ -129,7 +136,7 @@ view: banking_client_facts {
   measure: high_value_clients {
     type: count_distinct
     description: "High value clients have a daily average balance over $10,000"
-    filters: [average_daily_balance: ">10000"]
+    filters: [is_high_value: "yes"]
     sql: ${client_id} ;;
     drill_fields: [account_id,account_start_date,client.name,total_in_accounts_yesterday]
   }
