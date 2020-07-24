@@ -99,7 +99,9 @@ view: transcript {
 
   dimension: messages {
     hidden: yes
-    sql: ${TABLE}.messages ;;
+    sql:
+    -- spectacles: ignore
+    ${TABLE}.messages ;;
   }
 
   ### Derived Dimensions ###
@@ -372,6 +374,7 @@ view: transcript__messages {
     type: average
     sql: ${message_sentiment}  ;;
     value_format_name: percent_1
+    drill_fields: []
   }
 
   measure: number_of_topics {

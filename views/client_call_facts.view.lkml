@@ -10,7 +10,7 @@ view: client_call_facts {
       column: total_call_time { field: transcript__messages.total_call_time }
       column: average_conversation_duration {}
       column: average_csat { field: satisfaction_ratings.average_csat }
-      column: count { field: satisfaction_ratings.count }
+      column: number_surveys_completed { field: satisfaction_ratings.count }
       column: first_conversation_time {}
     }
   }

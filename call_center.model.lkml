@@ -3,7 +3,7 @@ connection: "looker-private-demo"
 include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
 # include: "/**/view.lkml"                   # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
-include: "//retail_banking/banking_and_card_views/*.view.lkml"
+include: "//retail_banking/banking_and_card_views/client.view.lkml"
 
 
 explore: transcript {
