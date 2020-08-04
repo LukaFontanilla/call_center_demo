@@ -142,3 +142,11 @@ view: banking_client_facts {
   }
 
 }
+
+
+explore: +card_transactions {
+  hidden: yes
+}
+explore: +balances_fact {
+  hidden: yes
+}

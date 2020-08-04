@@ -1,11 +1,14 @@
+
+include: "dashboards/*.lookml"
 connection: "looker-private-demo"
+label: "Retail Banking"
 
 include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
-# include: "/dashboards/*.dashboard"   # include a LookML dashboard called my_dashboard
 include: "//retail_banking/banking_and_card_views/client.view.lkml"
 
 
 explore: transcript {
+  label: "(6) Call Center"
   fields: [ALL_FIELDS*, -client.has_card, -client.has_loan, -client.days_since_account_creation, -client.number_of_clients_with_loans,
       -client.number_of_clients_with_cards, -client.percent_clients_with_loans, -client.percent_clients_with_cards]
   join: transcript__messages {
