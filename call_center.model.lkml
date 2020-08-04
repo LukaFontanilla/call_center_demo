@@ -1,9 +1,9 @@
+
 include: "dashboards/*.lookml"
 connection: "looker-private-demo"
 label: "Retail Banking"
 
 include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
-# include: "/dashboards/*.dashboard"   # include a LookML dashboard called my_dashboard
 include: "//retail_banking/banking_and_card_views/client.view.lkml"
 
 

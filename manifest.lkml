@@ -1,9 +1,10 @@
 project_name: "call_center"
 
-# # Use local_dependency: To enable referencing of another project
-# # on this instance with include: statements
-#
+# local_dependency: {
+#   project: "retail_banking"
+# }
 
-local_dependency: {
-  project: "retail_banking"
+remote_dependency: retail_banking {
+  url: "https://github.com/looker/financial_services_demo.git"
+  ref: "master"
 }
