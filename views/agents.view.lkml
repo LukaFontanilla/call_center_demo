@@ -24,7 +24,7 @@ view: agents {
     sql: ${TABLE}.name ;;
     link: {
       label: "Agent Performance"
-      url: "/dashboards/5kxrH6SEfcxWdZi1Gts3La?Agent={{ value | encode_uri }}"
+      url: "/dashboards/YWRiowpHTm2XSksFIRlPkg?Agent={{ value | encode_uri }}"
       icon_url: "http://www.looker.com/favicon.ico"
     }
     action: {

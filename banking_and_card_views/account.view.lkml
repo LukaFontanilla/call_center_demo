@@ -60,7 +60,7 @@ view: account {
     }
     link: {
       label: "Customer Account Overview"
-      url: "/dashboards/goGpXFSyjbvdcrPMNAalS8?Account%20ID={{ value | encode_uri }}"
+      url: "/dashboards/H6a20GawTA4JuU3drz1aCs?Account%20ID={{ value | encode_uri }}"
       icon_url: "http://www.looker.com/favicon.ico"
     }
     required_fields: [client.first_name]
@@ -89,7 +89,7 @@ view: account {
       url: "https://hooks.zapier.com/hooks/catch/1662138/tvc3zj/"
       param: {
         name: "user_dash_link"
-        value: "/dashboards/goGpXFSyjbvdcrPMNAalS8?Account%20ID={{ account_id._value }}"
+        value: "/dashboards/H6a20GawTA4JuU3drz1aCs?Account%20ID={{ account_id._value }}"
       }
       form_param: {
         name: "Message"

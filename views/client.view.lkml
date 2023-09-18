@@ -9,7 +9,7 @@ view: client {
     value_format_name: id
     link: {
       label: "Customer Account Overview"
-      url: "/dashboards/goGpXFSyjbvdcrPMNAalS8?Client%20ID={{ value | encode_uri }}"
+      url: "/dashboards/H6a20GawTA4JuU3drz1aCs?Client%20ID={{ value | encode_uri }}"
       icon_url: "http://www.looker.com/favicon.ico"
     }
   }

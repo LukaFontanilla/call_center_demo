@@ -112,7 +112,7 @@ view: card {
     }
     link: {
       label: "{% if value == 'No Card' %}{% else %} Card Type Lookup Dashboard for {{ value }} {% endif %}"
-      url: "/dashboards/WIrk7cojLJoQg2n1hiXw4O?Card%20Type={{ value }}"
+      url: "/dashboards/y3doiR8qKQWRZRx4XvvS1a?Card%20Type={{ value }}"
       icon_url: "http://www.looker.com/favicon.ico"
     }
   }

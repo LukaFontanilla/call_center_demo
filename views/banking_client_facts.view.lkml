@@ -63,7 +63,7 @@ view: banking_client_facts {
     value_format_name: id
     link: {
       label: "Account Overview"
-      url: "/dashboards/goGpXFSyjbvdcrPMNAalS8?Account%20ID={{ value | encode_uri }}"
+      url: "/dashboards/H6a20GawTA4JuU3drz1aCs?Account%20ID={{ value | encode_uri }}"
       icon_url: "https://www.pngitem.com/pimgs/m/432-4328680_crime-dashboard-navigation-icon-emblem-hd-png-download.png"
     }
     action: {
