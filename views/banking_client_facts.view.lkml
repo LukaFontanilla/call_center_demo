@@ -11,10 +11,10 @@ view: banking_client_facts {
       column: account_id { field: account.account_id }
       column: account_created_date { field: account.create_raw }
       column: number_of_credit_cards { field: card.number_of_credit_cards }
-      filters: {
-        field: balances_fact.balance_date
-        value: "14 days"
-      }
+      # filters: {
+      #   field: balances_fact.balance_date
+      #   value: "14 days"
+      # }
     }
   }
 
